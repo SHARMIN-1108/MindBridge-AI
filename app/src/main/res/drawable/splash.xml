@@ -1,0 +1,44 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="800dp"
+    android:viewportWidth="360"
+    android:viewportHeight="800">
+
+    <!-- Background -->
+    <path
+        android:fillColor="#E4EFF5"
+        android:pathData="M0,0h360v800h-360z" />
+
+    <!-- Top Left Soft Teal Circle -->
+    <path
+        android:fillColor="#CBE5DC"
+        android:pathData="M -50,-20 A 150,150 0 1,0 250,180 A 150,150 0 1,0 -50,-20 Z" />
+
+    <!-- Top Right Yellow Dot -->
+    <path
+        android:fillColor="#FFF5E4"
+        android:pathData="M 280,160 A 20,20 0 1,0 320,160 A 20,20 0 1,0 280,160 Z" />
+
+    <!-- Bottom Right Soft Teal Circle -->
+    <path
+        android:fillColor="#CBE5DC"
+        android:pathData="M 180,680 A 160,160 0 1,0 500,680 A 160,160 0 1,0 180,680 Z" />
+
+    <!-- Center White Card for Logo -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 130,300 h100 a20,20 0 0 1 20,20 v100 a20,20 0 0 1 -20,20 h-100 a20,20 0 0 1 -20,-20 v-100 a20,20 0 0 1 20,-20 Z" />
+
+    <!-- Teal Leaf Logo -->
+    <path
+        android:fillColor="#4CA695"
+        android:pathData="M 180,330 C 210,330 215,365 180,390 C 145,365 150,330 180,330 Z" />
+
+    <!-- White Stem inside Leaf -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M 180,375 L 180,355 M 180,355 L 168,343 M 180,355 L 192,343" />
+
+</vector>
