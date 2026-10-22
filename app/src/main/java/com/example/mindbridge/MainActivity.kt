@@ -4,44 +4,307 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mindbridge.ui.album.AlbumScreen
+import com.example.mindbridge.ui.album.AlbumViewModel
+import com.example.mindbridge.ui.caregiver.CaregiverScreen
+import com.example.mindbridge.ui.caregiver.CaregiverViewModel
+import com.example.mindbridge.ui.companion.CompanionScreen
+import com.example.mindbridge.ui.companion.CompanionViewModel
+import com.example.mindbridge.ui.games.GamesScreen
+import com.example.mindbridge.ui.games.GamesViewModel
+import com.example.mindbridge.ui.home.HomeScreen
+import com.example.mindbridge.ui.home.HomeViewModel
+import com.example.mindbridge.ui.login.LoginScreen
+import com.example.mindbridge.ui.login.LoginViewModel
+import com.example.mindbridge.ui.memory.MemoryScreen
+import com.example.mindbridge.ui.memory.MemoryViewModel
+import com.example.mindbridge.ui.places.PlacesScreen
+import com.example.mindbridge.ui.places.PlacesViewModel
+import com.example.mindbridge.ui.progress.ProgressScreen
+import com.example.mindbridge.ui.progress.ProgressViewModel
+import com.example.mindbridge.ui.register.RegisterScreen
+import com.example.mindbridge.ui.register.RegisterViewModel
+import com.example.mindbridge.ui.reminders.RemindersScreen
+import com.example.mindbridge.ui.reminders.RemindersViewModel
+import com.example.mindbridge.ui.schedule.ScheduleScreen
+import com.example.mindbridge.ui.schedule.ScheduleViewModel
+import com.example.mindbridge.ui.splash.SplashScreen
+import com.example.mindbridge.ui.splash.SplashUiState
+import com.example.mindbridge.ui.splash.SplashViewModel
+import com.example.mindbridge.ui.support.SupportScreen
+import com.example.mindbridge.ui.support.SupportViewModel
 import com.example.mindbridge.ui.theme.MindbridgeTheme
+import com.example.mindbridge.ui.voice.VoiceScreen
+import com.example.mindbridge.ui.voice.VoiceViewModel
+import com.example.mindbridge.ui.welcome.WelcomeScreen
+import com.example.mindbridge.ui.welcome.WelcomeUiState
+import com.example.mindbridge.ui.welcome.WelcomeViewModel
+
+enum class Screen {
+    SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT
+}
 
 class MainActivity : ComponentActivity() {
+
+    private val splashViewModel: SplashViewModel by viewModels()
+    private val welcomeViewModel: WelcomeViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
+    private val registerViewModel: RegisterViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val scheduleViewModel: ScheduleViewModel by viewModels()
+    private val companionViewModel: CompanionViewModel by viewModels()
+    private val gamesViewModel: GamesViewModel by viewModels()
+    private val memoryViewModel: MemoryViewModel by viewModels()
+    private val albumViewModel: AlbumViewModel by viewModels()
+    private val voiceViewModel: VoiceViewModel by viewModels()
+    private val remindersViewModel: RemindersViewModel by viewModels()
+    private val placesViewModel: PlacesViewModel by viewModels()
+    private val progressViewModel: ProgressViewModel by viewModels()
+    private val caregiverViewModel: CaregiverViewModel by viewModels()
+    private val supportViewModel: SupportViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MindbridgeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val splashState by splashViewModel.uiState.collectAsStateWithLifecycle()
+                val welcomeState by welcomeViewModel.uiState.collectAsStateWithLifecycle()
+                val loginState by loginViewModel.uiState.collectAsStateWithLifecycle()
+                val registerState by registerViewModel.uiState.collectAsStateWithLifecycle()
+
+                var currentScreen by remember { mutableStateOf(Screen.SPLASH) }
+
+                // Handle initial splash transition
+                LaunchedEffect(splashState) {
+                    if (splashState is SplashUiState.Completed) {
+                        currentScreen = Screen.WELCOME
+                    }
+                }
+
+                // Handle welcome screen navigation actions
+                LaunchedEffect(welcomeState) {
+                    when (welcomeState) {
+                        is WelcomeUiState.NavigateToGetStarted -> currentScreen = Screen.REGISTER
+                        is WelcomeUiState.NavigateToLogin -> currentScreen = Screen.LOGIN
+                        else -> {}
+                    }
+                }
+
+                // Handle login success or navigation to register
+                LaunchedEffect(loginState) {
+                    if (loginState.isLoginSuccess) {
+                        currentScreen = Screen.HOME
+                    } else if (loginState.navigateToRegister) {
+                        currentScreen = Screen.REGISTER
+                    }
+                }
+
+                // Handle register success or navigation to login
+                LaunchedEffect(registerState) {
+                    if (registerState.isRegisterSuccess) {
+                        currentScreen = Screen.HOME
+                    } else if (registerState.navigateToLogin) {
+                        currentScreen = Screen.LOGIN
+                    }
+                }
+
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    when (currentScreen) {
+                        Screen.SPLASH -> {
+                            SplashScreen()
+                        }
+                        Screen.WELCOME -> {
+                            WelcomeScreen(
+                                onGetStartedClick = { welcomeViewModel.onGetStartedClicked() },
+                                onLoginClick = { welcomeViewModel.onLoginClicked() }
+                            )
+                        }
+                        Screen.LOGIN -> {
+                            LoginScreen(
+                                viewModel = loginViewModel,
+                                onBackClick = {
+                                    loginViewModel.resetState()
+                                    welcomeViewModel.resetState()
+                                    currentScreen = Screen.WELCOME
+                                },
+                                onLoginSuccess = {
+                                    currentScreen = Screen.HOME
+                                },
+                                onCreateAccountClick = {
+                                    loginViewModel.resetState()
+                                    currentScreen = Screen.REGISTER
+                                }
+                            )
+                        }
+                        Screen.REGISTER -> {
+                            RegisterScreen(
+                                viewModel = registerViewModel,
+                                onBackClick = {
+                                    registerViewModel.resetState()
+                                    welcomeViewModel.resetState()
+                                    currentScreen = Screen.WELCOME
+                                },
+                                onRegisterSuccess = {
+                                    currentScreen = Screen.HOME
+                                },
+                                onLoginClick = {
+                                    registerViewModel.resetState()
+                                    currentScreen = Screen.LOGIN
+                                }
+                            )
+                        }
+                        Screen.HOME -> {
+                            HomeScreen(
+                                viewModel = homeViewModel,
+                                onScheduleClick = {
+                                    currentScreen = Screen.SCHEDULE
+                                },
+                                onCompanionClick = {
+                                    currentScreen = Screen.COMPANION
+                                },
+                                onGamesClick = {
+                                    currentScreen = Screen.GAMES
+                                },
+                                onMemoryClick = {
+                                    currentScreen = Screen.MEMORY
+                                },
+                                onRemindersClick = {
+                                    currentScreen = Screen.REMINDERS
+                                }
+                            )
+                        }
+                        Screen.SCHEDULE -> {
+                            ScheduleScreen(
+                                viewModel = scheduleViewModel,
+                                onBackClick = {
+                                    scheduleViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.COMPANION -> {
+                            CompanionScreen(
+                                viewModel = companionViewModel,
+                                onBackClick = {
+                                    companionViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.GAMES -> {
+                            GamesScreen(
+                                viewModel = gamesViewModel,
+                                onBackClick = {
+                                    gamesViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                },
+                                onProgressClick = {
+                                    currentScreen = Screen.PROGRESS
+                                }
+                            )
+                        }
+                        Screen.MEMORY -> {
+                            MemoryScreen(
+                                viewModel = memoryViewModel,
+                                onBackClick = {
+                                    memoryViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                },
+                                onAlbumClick = {
+                                    currentScreen = Screen.ALBUM
+                                }
+                            )
+                        }
+                        Screen.ALBUM -> {
+                            AlbumScreen(
+                                viewModel = albumViewModel,
+                                onBackClick = {
+                                    albumViewModel.resetState()
+                                    currentScreen = Screen.MEMORY
+                                },
+                                onVoiceClick = {
+                                    currentScreen = Screen.VOICE
+                                },
+                                onPlacesClick = {
+                                    currentScreen = Screen.PLACES
+                                }
+                            )
+                        }
+                        Screen.VOICE -> {
+                            VoiceScreen(
+                                viewModel = voiceViewModel,
+                                onBackClick = {
+                                    voiceViewModel.resetState()
+                                    currentScreen = Screen.ALBUM
+                                }
+                            )
+                        }
+                        Screen.REMINDERS -> {
+                            RemindersScreen(
+                                viewModel = remindersViewModel,
+                                onBackClick = {
+                                    remindersViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.PLACES -> {
+                            PlacesScreen(
+                                viewModel = placesViewModel,
+                                onBackClick = {
+                                    placesViewModel.resetState()
+                                    currentScreen = Screen.ALBUM
+                                }
+                            )
+                        }
+                        Screen.PROGRESS -> {
+                            ProgressScreen(
+                                viewModel = progressViewModel,
+                                onBackClick = {
+                                    progressViewModel.resetState()
+                                    currentScreen = Screen.GAMES
+                                }
+                            )
+                        }
+                        Screen.CAREGIVER -> {
+                            CaregiverScreen(
+                                viewModel = caregiverViewModel,
+                                onBackClick = {
+                                    caregiverViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                },
+                                onViewMemoriesClick = {
+                                    caregiverViewModel.resetState()
+                                    currentScreen = Screen.MEMORY
+                                },
+                                onManageRemindersClick = {
+                                    caregiverViewModel.resetState()
+                                    currentScreen = Screen.REMINDERS
+                                },
+                                onSupportClick = {
+                                    currentScreen = Screen.SUPPORT
+                                }
+                            )
+                        }
+                        Screen.SUPPORT -> {
+                            SupportScreen(
+                                viewModel = supportViewModel,
+                                onBackClick = {
+                                    supportViewModel.resetState()
+                                    currentScreen = Screen.CAREGIVER
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MindbridgeTheme {
-        Greeting("Android")
     }
 }

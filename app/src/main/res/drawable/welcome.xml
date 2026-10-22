@@ -1,0 +1,88 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="240dp"
+    android:viewportWidth="320"
+    android:viewportHeight="240">
+
+    <!-- Garden / Background Soft Gradient & Foliage -->
+    <path
+        android:fillColor="#E4EFF5"
+        android:pathData="M0,0h320v240h-320z" />
+
+    <!-- Bush / Garden Greenery Top Right -->
+    <path
+        android:fillColor="#A3C1AD"
+        android:pathData="M260,0 C290,10 320,40 320,80 C320,95 310,100 295,90 C280,80 265,95 250,85 C235,75 230,50 240,30 C245,20 250,5 260,0 Z" />
+
+    <!-- Garden Wall / Patio backdrop -->
+    <path
+        android:fillColor="#D8C5B2"
+        android:pathData="M0,120 h320 v120 h-320 z" />
+
+    <!-- Table Surface (Round Wooden Table) -->
+    <path
+        android:fillColor="#C49A6C"
+        android:pathData="M60,150 C60,135 100,120 160,120 C220,120 260,135 260,150 C260,165 220,180 160,180 C100,180 60,165 60,150 Z" />
+
+    <!-- Table Rim / Depth -->
+    <path
+        android:fillColor="#A77E51"
+        android:pathData="M60,150 C60,155 100,170 160,170 C220,170 260,155 260,150 C260,162 220,175 160,175 C100,175 60,162 60,150 Z" />
+
+    <!-- Photo Album Open on Table -->
+    <path
+        android:fillColor="#F4E8D8"
+        android:pathData="M110,135 h100 v30 h-100 z" />
+    <path
+        android:strokeColor="#5C4033"
+        android:strokeWidth="1.5"
+        android:pathData="M160,135 v30" />
+    <!-- Album Pages Content lines -->
+    <path
+        android:strokeColor="#8C7060"
+        android:strokeWidth="1"
+        android:pathData="M120,143 h30 M120,150 h25 M170,143 h30 M170,150 h25" />
+
+    <!-- Person 1 (Older Woman on Left) -->
+    <!-- Hair (Silver/Grey bun) -->
+    <path
+        android:fillColor="#D1D8E0"
+        android:pathData="M85,60 C70,60 65,75 75,90 C85,105 105,95 100,75 C98,68 92,60 85,60 Z" />
+    <!-- Face -->
+    <path
+        android:fillColor="#FCE4D6"
+        android:pathData="M80,75 C72,75 70,95 85,105 C92,100 95,85 80,75 Z" />
+    <!-- Blouse / Outfit (Soft Sage Green) -->
+    <path
+        android:fillColor="#7FA695"
+        android:pathData="M55,150 C55,120 70,105 90,105 C115,105 125,125 130,150 Z" />
+
+    <!-- Person 2 (Younger Woman in Center) -->
+    <!-- Hair (Warm Brown hair) -->
+    <path
+        android:fillColor="#8D5B4C"
+        android:pathData="M150,45 C130,45 125,75 135,100 C145,115 165,110 170,90 C175,70 165,45 150,45 Z" />
+    <!-- Face -->
+    <path
+        android:fillColor="#FADBD8"
+        android:pathData="M145,55 C138,55 138,78 152,85 C160,82 160,65 145,55 Z" />
+    <!-- Outfit (Light Blue Dress) -->
+    <path
+        android:fillColor="#5D93B2"
+        android:pathData="M120,170 C120,130 135,110 160,110 C185,110 200,130 200,170 Z" />
+
+    <!-- Person 3 (Child on Right) -->
+    <!-- Hair -->
+    <path
+        android:fillColor="#C49A6C"
+        android:pathData="M225,60 C215,60 210,75 220,85 C230,95 242,85 240,70 C238,62 232,60 225,60 Z" />
+    <!-- Face -->
+    <path
+        android:fillColor="#FCE4D6"
+        android:pathData="M220,70 C215,70 214,85 224,90 C230,88 230,75 220,70 Z" />
+    <!-- Outfit -->
+    <path
+        android:fillColor="#6AA5A9"
+        android:pathData="M205,170 C205,140 215,125 235,125 C255,125 265,140 265,170 Z" />
+
+</vector>
