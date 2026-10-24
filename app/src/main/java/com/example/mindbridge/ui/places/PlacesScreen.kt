@@ -1,5 +1,6 @@
 package com.example.mindbridge.ui.places
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mindbridge.R
 import com.example.mindbridge.ui.theme.MindbridgeTheme
 
 val PlacesBackground = Color(0xFFFAF6EE)
@@ -91,16 +95,21 @@ fun PlacesScreen(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    // Map preview placeholder box
+                    // Map preview image from drawable/safe_places_screen
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(120.dp)
+                            .height(130.dp)
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFFD8E2DC)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "🗺️ Map Preview", fontSize = 14.sp, color = PlacesTextGray, fontWeight = FontWeight.Medium)
+                        Image(
+                            painter = painterResource(id = R.drawable.safe_places_screen),
+                            contentDescription = "Safe Places Screen Reference",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))

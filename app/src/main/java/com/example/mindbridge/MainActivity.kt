@@ -26,14 +26,25 @@ import com.example.mindbridge.ui.memory.MemoryScreen
 import com.example.mindbridge.ui.memory.MemoryViewModel
 import com.example.mindbridge.ui.places.PlacesScreen
 import com.example.mindbridge.ui.places.PlacesViewModel
+import com.example.mindbridge.ui.profile.ProfileScreen
+import com.example.mindbridge.ui.profile.ProfileViewModel
 import com.example.mindbridge.ui.progress.ProgressScreen
 import com.example.mindbridge.ui.progress.ProgressViewModel
 import com.example.mindbridge.ui.register.RegisterScreen
 import com.example.mindbridge.ui.register.RegisterViewModel
+import com.example.mindbridge.ui.addmemory.AddMemoryScreen
+import com.example.mindbridge.ui.addmemory.AddMemoryViewModel
+import com.example.mindbridge.ui.aiconversations.AiConversationsScreen
+import com.example.mindbridge.ui.aiconversations.AiConversationsViewModel
+import com.example.mindbridge.ui.memorydetails.MemoryDetailsScreen
+import com.example.mindbridge.ui.memorydetails.MemoryDetailsViewModel
+import com.example.mindbridge.ui.register.UserRole
 import com.example.mindbridge.ui.reminders.RemindersScreen
 import com.example.mindbridge.ui.reminders.RemindersViewModel
 import com.example.mindbridge.ui.schedule.ScheduleScreen
 import com.example.mindbridge.ui.schedule.ScheduleViewModel
+import com.example.mindbridge.ui.settings.SettingsScreen
+import com.example.mindbridge.ui.settings.SettingsViewModel
 import com.example.mindbridge.ui.splash.SplashScreen
 import com.example.mindbridge.ui.splash.SplashUiState
 import com.example.mindbridge.ui.splash.SplashViewModel
@@ -47,7 +58,7 @@ import com.example.mindbridge.ui.welcome.WelcomeUiState
 import com.example.mindbridge.ui.welcome.WelcomeViewModel
 
 enum class Screen {
-    SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT
+    SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT, PROFILE, SETTINGS, ADD_MEMORY, MEMORY_DETAILS, AI_CONVERSATIONS
 }
 
 class MainActivity : ComponentActivity() {
@@ -68,6 +79,11 @@ class MainActivity : ComponentActivity() {
     private val progressViewModel: ProgressViewModel by viewModels()
     private val caregiverViewModel: CaregiverViewModel by viewModels()
     private val supportViewModel: SupportViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
+    private val settingsViewModel: SettingsViewModel by viewModels()
+    private val addMemoryViewModel: AddMemoryViewModel by viewModels()
+    private val memoryDetailsViewModel: MemoryDetailsViewModel by viewModels()
+    private val aiConversationsViewModel: AiConversationsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +125,11 @@ class MainActivity : ComponentActivity() {
                 // Handle register success or navigation to login
                 LaunchedEffect(registerState) {
                     if (registerState.isRegisterSuccess) {
-                        currentScreen = Screen.HOME
+                        currentScreen = if (registerState.role == UserRole.FAMILY_CAREGIVER) {
+                            Screen.CAREGIVER
+                        } else {
+                            Screen.HOME
+                        }
                     } else if (registerState.navigateToLogin) {
                         currentScreen = Screen.LOGIN
                     }
@@ -299,6 +319,42 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = {
                                     supportViewModel.resetState()
                                     currentScreen = Screen.CAREGIVER
+                                }
+                            )
+                        }
+                        Screen.PROFILE -> {
+                            ProfileScreen(
+                                viewModel = profileViewModel,
+                                onBackClick = {
+                                    profileViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.SETTINGS -> {
+                            SettingsScreen(
+                                viewModel = settingsViewModel,
+                                onBackClick = {
+                                    settingsViewModel.resetState()
+                                    currentScreen = Screen.PROFILE
+                                }
+                            )
+                        }
+                        Screen.ADD_MEMORY -> {
+                            AddMemoryScreen(
+                                viewModel = addMemoryViewModel,
+                                onBackClick = {
+                                    addMemoryViewModel.resetState()
+                                    currentScreen = Screen.MEMORY
+                                }
+                            )
+                        }
+                        Screen.MEMORY_DETAILS -> {
+                            MemoryDetailsScreen(
+                                viewModel = memoryDetailsViewModel,
+                                onBackClick = {
+                                    memoryDetailsViewModel.resetState()
+                                    currentScreen = Screen.ALBUM
                                 }
                             )
                         }

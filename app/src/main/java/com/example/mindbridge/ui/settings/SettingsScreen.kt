@@ -1,0 +1,280 @@
+package com.example.mindbridge.ui.settings
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mindbridge.ui.theme.MindbridgeTheme
+
+val SettingsBackground = Color(0xFFFAF6EE)
+val SettingsTealPrimary = Color(0xFF2E695F)
+val SettingsTextDark = Color(0xFF1E2A38)
+val SettingsTextGray = Color(0xFF5B6E80)
+val SettingsCardBlueBg = Color(0xFFE4EFF5)
+val SettingsMintBg = Color(0xFFCBE5DC)
+val SettingsYellowBg = Color(0xFFFFF5E4)
+
+@Composable
+fun SettingsScreen(
+    viewModel: SettingsViewModel = viewModel(),
+    onBackClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = SettingsBackground,
+        bottomBar = {
+            SettingsBottomBar(selectedTab = state.selectedTab)
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp)
+        ) {
+            // Top Bar: Back arrow and "Settings" title
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBackClick, modifier = Modifier.size(24.dp)) {
+                    Text(text = "←", fontSize = 20.sp, color = SettingsTextDark, fontWeight = FontWeight.Bold)
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Settings",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = SettingsTextDark
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Settings List
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                state.settingsList.forEach { setting ->
+                    SettingCard(setting = setting, onClick = { viewModel.onSettingClick(setting.id) })
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Confirmation Example Card (Yellow bg)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = SettingsYellowBg),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Confirmation example",
+                        fontSize = 11.sp,
+                        color = SettingsTextGray,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Log out of MindBridge AI?",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SettingsTextDark
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "You can log in again when you're ready.",
+                        fontSize = 12.sp,
+                        color = SettingsTextGray
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OutlinedButton(
+                            onClick = { viewModel.stayHere() },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(46.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            border = BorderStroke(1.dp, Color(0xFFD8E2DC)),
+                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
+                        ) {
+                            Text(
+                                text = "Stay here",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = SettingsTextDark
+                            )
+                        }
+
+                        Button(
+                            onClick = { viewModel.logout() },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(46.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = SettingsTealPrimary)
+                        ) {
+                            Text(
+                                text = "Log Out",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+fun SettingCard(
+    setting: SettingItem,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(SettingsCardBlueBg, RoundedCornerShape(10.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = setting.icon, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = SettingsTealPrimary)
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column {
+                    Text(
+                        text = setting.title,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = SettingsTextDark
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = setting.subtitle,
+                        fontSize = 12.sp,
+                        color = SettingsTextGray
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = "Open",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = SettingsTealPrimary
+            )
+        }
+    }
+}
+
+@Composable
+fun SettingsBottomBar(selectedTab: Int) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color.White,
+        shadowElevation = 8.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp, horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SettingsBottomBarItem(icon = "🏠", label = "Home", isSelected = selectedTab == 0)
+            SettingsBottomBarItem(icon = "🖼️", label = "Memories", isSelected = selectedTab == 1)
+            SettingsBottomBarItem(icon = "🧩", label = "Activities", isSelected = selectedTab == 2)
+            SettingsBottomBarItem(icon = "👤", label = "Profile", isSelected = selectedTab == 3)
+        }
+    }
+}
+
+@Composable
+fun SettingsBottomBarItem(
+    icon: String,
+    label: String,
+    isSelected: Boolean
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(if (isSelected) SettingsMintBg.copy(alpha = 0.6f) else Color.Transparent)
+            .padding(horizontal = 12.dp, vertical = 6.dp)
+    ) {
+        Text(text = icon, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+            color = if (isSelected) SettingsTealPrimary else SettingsTextGray
+        )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun SettingsScreenPreview() {
+    MindbridgeTheme {
+        SettingsScreen()
+    }
+}
