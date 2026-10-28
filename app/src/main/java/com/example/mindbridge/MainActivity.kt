@@ -34,6 +34,23 @@ import com.example.mindbridge.ui.progress.ProgressScreen
 import com.example.mindbridge.ui.progress.ProgressViewModel
 import com.example.mindbridge.ui.register.RegisterScreen
 import com.example.mindbridge.ui.register.RegisterViewModel
+import com.example.mindbridge.ui.addmemory.AddMemoryScreen
+import com.example.mindbridge.ui.addmemory.AddMemoryViewModel
+import com.example.mindbridge.ui.aiconversations.AiConversationsScreen
+import com.example.mindbridge.ui.aiconversations.AiConversationsViewModel
+import com.example.mindbridge.ui.dailycheckin.DailyCheckInScreen
+import com.example.mindbridge.ui.dailycheckin.DailyCheckInViewModel
+import com.example.mindbridge.ui.familyupdates.FamilyUpdatesScreen
+import com.example.mindbridge.ui.familyupdates.FamilyUpdatesViewModel
+import com.example.mindbridge.ui.helpfulinformation.HelpfulInformationScreen
+import com.example.mindbridge.ui.helpfulinformation.HelpfulInformationViewModel
+import com.example.mindbridge.ui.importantpeople.ImportantPeopleScreen
+import com.example.mindbridge.ui.importantpeople.ImportantPeopleViewModel
+import com.example.mindbridge.ui.memorydetails.MemoryDetailsScreen
+import com.example.mindbridge.ui.memorydetails.MemoryDetailsViewModel
+import com.example.mindbridge.ui.preferences.PreferencesScreen
+import com.example.mindbridge.ui.preferences.PreferencesViewModel
+import com.example.mindbridge.ui.register.UserRole
 import com.example.mindbridge.ui.reminders.RemindersScreen
 import com.example.mindbridge.ui.reminders.RemindersViewModel
 import com.example.mindbridge.ui.schedule.ScheduleScreen
@@ -53,7 +70,11 @@ import com.example.mindbridge.ui.welcome.WelcomeUiState
 import com.example.mindbridge.ui.welcome.WelcomeViewModel
 
 enum class Screen {
+<<<<<<< HEAD
     SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT, MY_PROFILE, SETTINGS, ADD_MEMORY
+=======
+    SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT, PROFILE, SETTINGS, ADD_MEMORY, MEMORY_DETAILS, AI_CONVERSATIONS, PREFERENCES, IMPORTANT_PEOPLE, HELPFUL_INFORMATION, DAILY_CHECK_IN, FAMILY_UPDATES
+>>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
 }
 
 class MainActivity : ComponentActivity() {
@@ -77,6 +98,16 @@ class MainActivity : ComponentActivity() {
     private val profileViewModel: ProfileViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
     private val addMemoryViewModel: AddMemoryViewModel by viewModels()
+<<<<<<< HEAD
+=======
+    private val memoryDetailsViewModel: MemoryDetailsViewModel by viewModels()
+    private val aiConversationsViewModel: AiConversationsViewModel by viewModels()
+    private val preferencesViewModel: PreferencesViewModel by viewModels()
+    private val importantPeopleViewModel: ImportantPeopleViewModel by viewModels()
+    private val helpfulInformationViewModel: HelpfulInformationViewModel by viewModels()
+    private val dailyCheckInViewModel: DailyCheckInViewModel by viewModels()
+    private val familyUpdatesViewModel: FamilyUpdatesViewModel by viewModels()
+>>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +149,11 @@ class MainActivity : ComponentActivity() {
                 // Handle register success or navigation to login
                 LaunchedEffect(registerState) {
                     if (registerState.isRegisterSuccess) {
-                        currentScreen = Screen.HOME
+                        currentScreen = if (registerState.role == UserRole.FAMILY_CAREGIVER) {
+                            Screen.CAREGIVER
+                        } else {
+                            Screen.HOME
+                        }
                     } else if (registerState.navigateToLogin) {
                         currentScreen = Screen.LOGIN
                     }
@@ -317,15 +352,23 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
+<<<<<<< HEAD
                         Screen.MY_PROFILE -> {
+=======
+                        Screen.PROFILE -> {
+>>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                             ProfileScreen(
                                 viewModel = profileViewModel,
                                 onBackClick = {
                                     profileViewModel.resetState()
+<<<<<<< HEAD
                                     currentScreen = Screen.CAREGIVER
                                 },
                                 onSettingsClick = {
                                     currentScreen = Screen.SETTINGS
+=======
+                                    currentScreen = Screen.HOME
+>>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                                 }
                             )
                         }
@@ -334,11 +377,15 @@ class MainActivity : ComponentActivity() {
                                 viewModel = settingsViewModel,
                                 onBackClick = {
                                     settingsViewModel.resetState()
+<<<<<<< HEAD
                                     currentScreen = Screen.MY_PROFILE
                                 },
                                 onLogoutClick = {
                                     settingsViewModel.resetState()
                                     currentScreen = Screen.WELCOME
+=======
+                                    currentScreen = Screen.PROFILE
+>>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                                 }
                             )
                         }
@@ -348,9 +395,74 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = {
                                     addMemoryViewModel.resetState()
                                     currentScreen = Screen.MEMORY
+<<<<<<< HEAD
                                 },
                                 onSaveSuccess = {
                                     addMemoryViewModel.resetState()
+=======
+                                }
+                            )
+                        }
+                        Screen.MEMORY_DETAILS -> {
+                            MemoryDetailsScreen(
+                                viewModel = memoryDetailsViewModel,
+                                onBackClick = {
+                                    memoryDetailsViewModel.resetState()
+                                    currentScreen = Screen.ALBUM
+                                }
+                            )
+                        }
+                        Screen.AI_CONVERSATIONS -> {
+                            AiConversationsScreen(
+                                viewModel = aiConversationsViewModel,
+                                onBackClick = {
+                                    aiConversationsViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.PREFERENCES -> {
+                            PreferencesScreen(
+                                viewModel = preferencesViewModel,
+                                onBackClick = {
+                                    preferencesViewModel.resetState()
+                                    currentScreen = Screen.PROFILE
+                                }
+                            )
+                        }
+                        Screen.IMPORTANT_PEOPLE -> {
+                            ImportantPeopleScreen(
+                                viewModel = importantPeopleViewModel,
+                                onBackClick = {
+                                    importantPeopleViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.HELPFUL_INFORMATION -> {
+                            HelpfulInformationScreen(
+                                viewModel = helpfulInformationViewModel,
+                                onBackClick = {
+                                    helpfulInformationViewModel.resetState()
+                                    currentScreen = Screen.PROFILE
+                                }
+                            )
+                        }
+                        Screen.DAILY_CHECK_IN -> {
+                            DailyCheckInScreen(
+                                viewModel = dailyCheckInViewModel,
+                                onBackClick = {
+                                    dailyCheckInViewModel.resetState()
+                                    currentScreen = Screen.HOME
+                                }
+                            )
+                        }
+                        Screen.FAMILY_UPDATES -> {
+                            FamilyUpdatesScreen(
+                                viewModel = familyUpdatesViewModel,
+                                onBackClick = {
+                                    familyUpdatesViewModel.resetState()
+>>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                                     currentScreen = Screen.MEMORY
                                 }
                             )
