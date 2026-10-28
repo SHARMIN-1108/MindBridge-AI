@@ -2,6 +2,7 @@ package com.example.mindbridge.ui.caregiver
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -37,6 +38,7 @@ fun CaregiverScreen(
     onViewMemoriesClick: () -> Unit = {},
     onManageRemindersClick: () -> Unit = {},
     onSupportClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -79,9 +81,11 @@ fun CaregiverScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Profile Banner Card (blue bg)
+            // Profile Banner Card (blue bg) - Clicking opens My Profile
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onProfileClick),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = CaregiverCardBlueBg),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)

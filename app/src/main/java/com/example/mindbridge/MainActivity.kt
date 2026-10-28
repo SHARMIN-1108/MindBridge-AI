@@ -10,6 +10,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mindbridge.ui.addmemory.AddMemoryScreen
+import com.example.mindbridge.ui.addmemory.AddMemoryViewModel
 import com.example.mindbridge.ui.album.AlbumScreen
 import com.example.mindbridge.ui.album.AlbumViewModel
 import com.example.mindbridge.ui.caregiver.CaregiverScreen
@@ -26,6 +28,8 @@ import com.example.mindbridge.ui.memory.MemoryScreen
 import com.example.mindbridge.ui.memory.MemoryViewModel
 import com.example.mindbridge.ui.places.PlacesScreen
 import com.example.mindbridge.ui.places.PlacesViewModel
+import com.example.mindbridge.ui.profile.ProfileScreen
+import com.example.mindbridge.ui.profile.ProfileViewModel
 import com.example.mindbridge.ui.progress.ProgressScreen
 import com.example.mindbridge.ui.progress.ProgressViewModel
 import com.example.mindbridge.ui.register.RegisterScreen
@@ -34,6 +38,8 @@ import com.example.mindbridge.ui.reminders.RemindersScreen
 import com.example.mindbridge.ui.reminders.RemindersViewModel
 import com.example.mindbridge.ui.schedule.ScheduleScreen
 import com.example.mindbridge.ui.schedule.ScheduleViewModel
+import com.example.mindbridge.ui.settings.SettingsScreen
+import com.example.mindbridge.ui.settings.SettingsViewModel
 import com.example.mindbridge.ui.splash.SplashScreen
 import com.example.mindbridge.ui.splash.SplashUiState
 import com.example.mindbridge.ui.splash.SplashViewModel
@@ -47,7 +53,7 @@ import com.example.mindbridge.ui.welcome.WelcomeUiState
 import com.example.mindbridge.ui.welcome.WelcomeViewModel
 
 enum class Screen {
-    SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT
+    SPLASH, WELCOME, LOGIN, REGISTER, HOME, SCHEDULE, COMPANION, GAMES, MEMORY, ALBUM, VOICE, REMINDERS, PLACES, PROGRESS, CAREGIVER, SUPPORT, MY_PROFILE, SETTINGS, ADD_MEMORY
 }
 
 class MainActivity : ComponentActivity() {
@@ -68,6 +74,9 @@ class MainActivity : ComponentActivity() {
     private val progressViewModel: ProgressViewModel by viewModels()
     private val caregiverViewModel: CaregiverViewModel by viewModels()
     private val supportViewModel: SupportViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
+    private val settingsViewModel: SettingsViewModel by viewModels()
+    private val addMemoryViewModel: AddMemoryViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -219,6 +228,9 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onAlbumClick = {
                                     currentScreen = Screen.ALBUM
+                                },
+                                onAddMemoryClick = {
+                                    currentScreen = Screen.ADD_MEMORY
                                 }
                             )
                         }
@@ -290,6 +302,9 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onSupportClick = {
                                     currentScreen = Screen.SUPPORT
+                                },
+                                onProfileClick = {
+                                    currentScreen = Screen.MY_PROFILE
                                 }
                             )
                         }
@@ -299,6 +314,44 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = {
                                     supportViewModel.resetState()
                                     currentScreen = Screen.CAREGIVER
+                                }
+                            )
+                        }
+                        Screen.MY_PROFILE -> {
+                            ProfileScreen(
+                                viewModel = profileViewModel,
+                                onBackClick = {
+                                    profileViewModel.resetState()
+                                    currentScreen = Screen.CAREGIVER
+                                },
+                                onSettingsClick = {
+                                    currentScreen = Screen.SETTINGS
+                                }
+                            )
+                        }
+                        Screen.SETTINGS -> {
+                            SettingsScreen(
+                                viewModel = settingsViewModel,
+                                onBackClick = {
+                                    settingsViewModel.resetState()
+                                    currentScreen = Screen.MY_PROFILE
+                                },
+                                onLogoutClick = {
+                                    settingsViewModel.resetState()
+                                    currentScreen = Screen.WELCOME
+                                }
+                            )
+                        }
+                        Screen.ADD_MEMORY -> {
+                            AddMemoryScreen(
+                                viewModel = addMemoryViewModel,
+                                onBackClick = {
+                                    addMemoryViewModel.resetState()
+                                    currentScreen = Screen.MEMORY
+                                },
+                                onSaveSuccess = {
+                                    addMemoryViewModel.resetState()
+                                    currentScreen = Screen.MEMORY
                                 }
                             )
                         }

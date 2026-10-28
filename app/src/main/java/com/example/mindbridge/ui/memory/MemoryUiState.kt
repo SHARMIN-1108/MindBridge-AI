@@ -19,5 +19,6 @@ data class MemoryUiState(
         MemoryItem("3", "23 August 2020", "A Day by the Sea", "A sunny afternoon with David.")
     ),
     val selectedTab: Int = 1,
-    val navigateToAlbum: Boolean = false
+    val navigateToAlbum: Boolean = false,
+    val navigateToAddMemory: Boolean = false
 )

@@ -15,7 +15,7 @@ class MemoryViewModel : ViewModel() {
     val uiState: StateFlow<MemoryUiState> = _uiState.asStateFlow()
 
     fun addMemory() {
-        // Handle adding memory action
+        _uiState.update { it.copy(navigateToAddMemory = true) }
     }
 
     fun openAlbum() {
@@ -23,7 +23,7 @@ class MemoryViewModel : ViewModel() {
     }
 
     fun resetNavigation() {
-        _uiState.update { it.copy(navigateToAlbum = false) }
+        _uiState.update { it.copy(navigateToAlbum = false, navigateToAddMemory = false) }
     }
 
     fun resetState() {

@@ -1,7 +1,6 @@
 package com.example.mindbridge.ui.memory
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -36,12 +35,17 @@ fun MemoryScreen(
     viewModel: MemoryViewModel = viewModel(),
     onBackClick: () -> Unit = {},
     onAlbumClick: () -> Unit = {},
+    onAddMemoryClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     if (state.navigateToAlbum) {
         onAlbumClick()
+        viewModel.resetNavigation()
+    }
+    if (state.navigateToAddMemory) {
+        onAddMemoryClick()
         viewModel.resetNavigation()
     }
 
