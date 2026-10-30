@@ -35,10 +35,13 @@ val CaregiverMintBg = Color(0xFFCBE5DC)
 fun CaregiverScreen(
     viewModel: CaregiverViewModel = viewModel(),
     onBackClick: () -> Unit = {},
+    onHomeClick: () -> Unit = {},
     onViewMemoriesClick: () -> Unit = {},
     onManageRemindersClick: () -> Unit = {},
     onSupportClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
+    onGamesClick: () -> Unit = {},
+    onScheduleClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,12 +50,34 @@ fun CaregiverScreen(
         onSupportClick()
         viewModel.resetNavigation()
     }
+    if (state.navigateToMemories) {
+        onViewMemoriesClick()
+        viewModel.resetNavigation()
+    }
+    if (state.navigateToReminders) {
+        onManageRemindersClick()
+        viewModel.resetNavigation()
+    }
+    if (state.navigateToGames) {
+        onGamesClick()
+        viewModel.resetNavigation()
+    }
+    if (state.navigateToSchedule) {
+        onScheduleClick()
+        viewModel.resetNavigation()
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = CaregiverBackground,
         bottomBar = {
-            CaregiverBottomBar(selectedTab = state.selectedTab)
+            CaregiverBottomBar(
+                selectedTab = state.selectedTab,
+                onHomeClick = onHomeClick,
+                onMemoriesClick = onViewMemoriesClick,
+                onActivitiesClick = onGamesClick,
+                onProfileClick = onProfileClick
+            )
         }
     ) { innerPadding ->
         Column(
@@ -135,9 +160,11 @@ fun CaregiverScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Moment 1: Enjoyed a word game
+            // Moment 1: Enjoyed a word game -> Opens Games
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { viewModel.openGames() },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
@@ -169,9 +196,11 @@ fun CaregiverScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Moment 2: Breakfast completed (mint bg)
+            // Moment 2: Breakfast completed -> Opens Schedule
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { viewModel.openSchedule() },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(containerColor = CaregiverMintBg),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
@@ -203,9 +232,11 @@ fun CaregiverScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Moment 3: Coming up & new memories
+            // Moment 3: Coming up & new memories -> Opens Memories
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { viewModel.openMemories() },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
@@ -268,7 +299,7 @@ fun CaregiverScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedButton(
-                onClick = { viewModel.contactFamilyMember() },
+                onClick = { viewModel.openSupport() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -302,7 +333,13 @@ fun CaregiverScreen(
 }
 
 @Composable
-fun CaregiverBottomBar(selectedTab: Int) {
+fun CaregiverBottomBar(
+    selectedTab: Int,
+    onHomeClick: () -> Unit,
+    onMemoriesClick: () -> Unit,
+    onActivitiesClick: () -> Unit,
+    onProfileClick: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = Color.White,
@@ -315,10 +352,30 @@ fun CaregiverBottomBar(selectedTab: Int) {
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CaregiverBottomBarItem(icon = "🏠", label = "Home", isSelected = selectedTab == 0)
-            CaregiverBottomBarItem(icon = "🖼️", label = "Memories", isSelected = selectedTab == 1)
-            CaregiverBottomBarItem(icon = "🧩", label = "Activities", isSelected = selectedTab == 2)
-            CaregiverBottomBarItem(icon = "👤", label = "Profile", isSelected = selectedTab == 3)
+            CaregiverBottomBarItem(
+                icon = "🏠",
+                label = "Home",
+                isSelected = selectedTab == 0,
+                onClick = onHomeClick
+            )
+            CaregiverBottomBarItem(
+                icon = "🖼️",
+                label = "Memories",
+                isSelected = selectedTab == 1,
+                onClick = onMemoriesClick
+            )
+            CaregiverBottomBarItem(
+                icon = "🧩",
+                label = "Activities",
+                isSelected = selectedTab == 2,
+                onClick = onActivitiesClick
+            )
+            CaregiverBottomBarItem(
+                icon = "👤",
+                label = "Profile",
+                isSelected = selectedTab == 3,
+                onClick = onProfileClick
+            )
         }
     }
 }
@@ -327,13 +384,15 @@ fun CaregiverBottomBar(selectedTab: Int) {
 fun CaregiverBottomBarItem(
     icon: String,
     label: String,
-    isSelected: Boolean
+    isSelected: Boolean,
+    onClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .background(if (isSelected) CaregiverMintBg.copy(alpha = 0.6f) else Color.Transparent)
+            .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 6.dp)
     ) {
         Text(text = icon, fontSize = 18.sp)

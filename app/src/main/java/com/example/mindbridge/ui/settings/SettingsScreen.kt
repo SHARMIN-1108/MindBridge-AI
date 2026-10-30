@@ -2,10 +2,6 @@ package com.example.mindbridge.ui.settings
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-<<<<<<< HEAD
-=======
-import androidx.compose.foundation.clickable
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,13 +33,26 @@ val SettingsYellowBg = Color(0xFFFFF5E4)
 fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
     onBackClick: () -> Unit = {},
-<<<<<<< HEAD
     onLogoutClick: () -> Unit = {},
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
+    onNotificationsClick: () -> Unit = {},
+    onPrivacyClick: () -> Unit = {},
+    onAboutClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    if (state.navigateToNotifications) {
+        onNotificationsClick()
+        viewModel.resetNavigation()
+    }
+    if (state.navigateToPrivacy) {
+        onPrivacyClick()
+        viewModel.resetNavigation()
+    }
+    if (state.navigateToAbout) {
+        onAboutClick()
+        viewModel.resetNavigation()
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -76,22 +85,27 @@ fun SettingsScreen(
                 )
             }
 
-<<<<<<< HEAD
             Spacer(modifier = Modifier.height(14.dp))
 
             // Settings Items List
-=======
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Settings List
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-<<<<<<< HEAD
                 state.settings.forEach { setting ->
-                    SettingCard(setting = setting, onOpenClick = { viewModel.openSetting(setting.id) })
+                    SettingCard(
+                        setting = setting,
+                        onOpenClick = {
+                            viewModel.onSettingClick(setting.id)
+                            if (setting.id == "3") {
+                                onNotificationsClick()
+                            } else if (setting.id == "4") {
+                                onPrivacyClick()
+                            } else if (setting.id == "6") {
+                                onAboutClick()
+                            }
+                        }
+                    )
                 }
             }
 
@@ -158,84 +172,6 @@ fun SettingsScreen(
                             ) {
                                 Text(text = "Log Out", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
                             }
-=======
-                state.settingsList.forEach { setting ->
-                    SettingCard(setting = setting, onClick = { viewModel.onSettingClick(setting.id) })
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Confirmation Example Card (Yellow bg)
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = SettingsYellowBg),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = "Confirmation example",
-                        fontSize = 11.sp,
-                        color = SettingsTextGray,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Log out of MindBridge AI?",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = SettingsTextDark
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = "You can log in again when you're ready.",
-                        fontSize = 12.sp,
-                        color = SettingsTextGray
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        OutlinedButton(
-                            onClick = { viewModel.stayHere() },
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(46.dp),
-                            shape = RoundedCornerShape(12.dp),
-                            border = BorderStroke(1.dp, Color(0xFFD8E2DC)),
-                            colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
-                        ) {
-                            Text(
-                                text = "Stay here",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = SettingsTextDark
-                            )
-                        }
-
-                        Button(
-                            onClick = { viewModel.logout() },
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(46.dp),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = SettingsTealPrimary)
-                        ) {
-                            Text(
-                                text = "Log Out",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color.White
-                            )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                         }
                     }
                 }
@@ -249,7 +185,6 @@ fun SettingsScreen(
 @Composable
 fun SettingCard(
     setting: SettingItem,
-<<<<<<< HEAD
     onOpenClick: () -> Unit
 ) {
     Card(
@@ -257,17 +192,6 @@ fun SettingCard(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-=======
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
     ) {
         Row(
             modifier = Modifier
@@ -286,11 +210,7 @@ fun SettingCard(
                         .background(SettingsCardBlueBg, RoundedCornerShape(10.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-<<<<<<< HEAD
-                    Text(text = setting.iconEmoji, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = SettingsTealPrimary)
-=======
-                    Text(text = setting.icon, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = SettingsTealPrimary)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
+                    Text(text = setting.icon.ifEmpty { setting.iconEmoji }, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = SettingsTealPrimary)
                 }
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -313,7 +233,6 @@ fun SettingCard(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-<<<<<<< HEAD
             Button(
                 onClick = onOpenClick,
                 modifier = Modifier.height(36.dp),
@@ -323,14 +242,6 @@ fun SettingCard(
             ) {
                 Text(text = "Open", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = SettingsTextDark)
             }
-=======
-            Text(
-                text = "Open",
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Bold,
-                color = SettingsTealPrimary
-            )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
         }
     }
 }

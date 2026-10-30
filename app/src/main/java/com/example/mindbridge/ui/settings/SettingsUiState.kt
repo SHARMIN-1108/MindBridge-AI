@@ -4,8 +4,8 @@ data class SettingItem(
     val id: String,
     val title: String,
     val subtitle: String,
-<<<<<<< HEAD
-    val iconEmoji: String
+    val iconEmoji: String = "",
+    val icon: String = ""
 )
 
 /**
@@ -13,26 +13,19 @@ data class SettingItem(
  */
 data class SettingsUiState(
     val settings: List<SettingItem> = listOf(
-=======
-    val icon: String
-)
-
-/**
- * UI State for the Settings Screen adhering to MVVM architecture.
- */
-data class SettingsUiState(
-    val settingsList: List<SettingItem> = listOf(
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
-        SettingItem("1", "Text Size", "Large", "T"),
-        SettingItem("2", "Sound and Voice", "Voice on · Gentle volume", "🔊"),
-        SettingItem("3", "Notifications", "Reminders and family updates on", "🔔"),
-        SettingItem("4", "Privacy", "Review example sharing choices", "🔒"),
-        SettingItem("5", "Language", "English", "🌐"),
-        SettingItem("6", "Help", "Simple guides and support", "❓")
+        SettingItem("1", "Text Size", "Large", "T", "T"),
+        SettingItem("2", "Sound and Voice", "Voice on • Gentle volume", "🔊", "🔊"),
+        SettingItem("3", "Notifications", "Reminders and family updates on", "🔔", "🔔"),
+        SettingItem("4", "Privacy", "Review example sharing choices", "🛡️", "🛡️"),
+        SettingItem("5", "Language", "English", "🌐", "🌐"),
+        SettingItem("6", "Help", "Simple guides and support", "❓", "❓")
     ),
-<<<<<<< HEAD
+    val settingsList: List<SettingItem> = emptyList(),
     val showLogoutConfirmation: Boolean = true,
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
-    val selectedTab: Int = 3
+    val selectedTab: Int = 3,
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
+    val navigateToNotifications: Boolean = false,
+    val navigateToPrivacy: Boolean = false,
+    val navigateToAbout: Boolean = false
 )

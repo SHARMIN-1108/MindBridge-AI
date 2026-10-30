@@ -14,10 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-<<<<<<< HEAD
-=======
 import androidx.compose.ui.text.style.TextAlign
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,23 +26,21 @@ val AddMemoryBackground = Color(0xFFFAF6EE)
 val AddMemoryTealPrimary = Color(0xFF2E695F)
 val AddMemoryTextDark = Color(0xFF1E2A38)
 val AddMemoryTextGray = Color(0xFF5B6E80)
-<<<<<<< HEAD
-=======
 val AddMemoryCardBlueBg = Color(0xFFE4EFF5)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
 val AddMemoryMintBg = Color(0xFFCBE5DC)
 
 @Composable
 fun AddMemoryScreen(
     viewModel: AddMemoryViewModel = viewModel(),
     onBackClick: () -> Unit = {},
-<<<<<<< HEAD
     onSaveSuccess: () -> Unit = {},
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    if (state.isSavedSuccess) {
+        onSaveSuccess()
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -88,41 +83,24 @@ fun AddMemoryScreen(
                 lineHeight = 18.sp
             )
 
-<<<<<<< HEAD
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Memory title field
-            Text(text = "Memory title", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = AddMemoryTextDark)
-=======
             Spacer(modifier = Modifier.height(16.dp))
 
             // Field 1: Memory title
             Text(text = "Memory title", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTextDark)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             Spacer(modifier = Modifier.height(6.dp))
             OutlinedTextField(
                 value = state.title,
                 onValueChange = { viewModel.onTitleChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("e.g. A morning in the garden") },
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = AddMemoryTealPrimary,
                     unfocusedBorderColor = Color(0xFFD8E2DC),
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White
-<<<<<<< HEAD
                 ),
                 singleLine = true
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = "Title added. You're all set.", fontSize = 11.sp, color = AddMemoryTextGray)
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Date field
-            Text(text = "Date", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = AddMemoryTextDark)
-=======
-                )
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = state.titleHint, fontSize = 11.sp, color = AddMemoryTextGray)
@@ -131,110 +109,74 @@ fun AddMemoryScreen(
 
             // Field 2: Date
             Text(text = "Date", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTextDark)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             Spacer(modifier = Modifier.height(6.dp))
             OutlinedTextField(
                 value = state.date,
                 onValueChange = { viewModel.onDateChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("e.g. 13 October 2026") },
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = AddMemoryTealPrimary,
                     unfocusedBorderColor = Color(0xFFD8E2DC),
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White
-<<<<<<< HEAD
                 ),
                 singleLine = true
-=======
-                )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             )
 
             Spacer(modifier = Modifier.height(14.dp))
 
-<<<<<<< HEAD
-            // Short description field
-            Text(text = "Short description", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = AddMemoryTextDark)
-=======
             // Field 3: Short description
             Text(text = "Short description", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTextDark)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             Spacer(modifier = Modifier.height(6.dp))
             OutlinedTextField(
                 value = state.description,
                 onValueChange = { viewModel.onDescriptionChanged(it) },
-<<<<<<< HEAD
-                modifier = Modifier.fillMaxWidth(),
-=======
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp),
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
+                placeholder = { Text("What made this moment special?") },
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = AddMemoryTealPrimary,
                     unfocusedBorderColor = Color(0xFFD8E2DC),
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White
-<<<<<<< HEAD
                 ),
                 minLines = 3
-=======
-                )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             )
 
             Spacer(modifier = Modifier.height(14.dp))
 
-<<<<<<< HEAD
-            // Associated people field
-            Text(text = "Associated people", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = AddMemoryTextDark)
-            Spacer(modifier = Modifier.height(6.dp))
-            OutlinedTextField(
-                value = state.associatedPeople,
-                onValueChange = { viewModel.onPeopleChanged(it) },
-=======
             // Field 4: Associated people
             Text(text = "Associated people", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTextDark)
             Spacer(modifier = Modifier.height(6.dp))
             OutlinedTextField(
                 value = state.associatedPeople,
                 onValueChange = { viewModel.onAssociatedPeopleChanged(it) },
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("e.g. Margaret, Emma") },
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = AddMemoryTealPrimary,
                     unfocusedBorderColor = Color(0xFFD8E2DC),
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White
-<<<<<<< HEAD
                 ),
                 singleLine = true
-=======
-                )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = "Use names familiar to you.", fontSize = 11.sp, color = AddMemoryTextGray)
 
             Spacer(modifier = Modifier.height(16.dp))
 
-<<<<<<< HEAD
-            // Add Photo Button
-=======
             // Media Action Buttons
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             OutlinedButton(
                 onClick = { viewModel.addPhoto() },
                 modifier = Modifier
                     .fillMaxWidth()
-<<<<<<< HEAD
-                    .height(48.dp),
-=======
                     .height(50.dp),
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(1.dp, Color(0xFFD8E2DC)),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
@@ -243,31 +185,18 @@ fun AddMemoryScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-<<<<<<< HEAD
-                    Text(text = "🖼️", fontSize = 16.sp)
-                    Text(text = "Add Photo", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTealPrimary)
-=======
                     Text(text = "🖼️", fontSize = 16.sp, color = AddMemoryTealPrimary)
                     Text(text = "Add Photo", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTealPrimary)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
-<<<<<<< HEAD
-            // Record Voice Note Button
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             OutlinedButton(
                 onClick = { viewModel.recordVoiceNote() },
                 modifier = Modifier
                     .fillMaxWidth()
-<<<<<<< HEAD
-                    .height(48.dp),
-=======
                     .height(50.dp),
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 shape = RoundedCornerShape(14.dp),
                 border = BorderStroke(1.dp, Color(0xFFD8E2DC)),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
@@ -276,20 +205,7 @@ fun AddMemoryScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-<<<<<<< HEAD
-                    Text(text = "🎙️", fontSize = 16.sp)
-                    Text(text = "Record Voice Note", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTealPrimary)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(text = state.mediaStatusText, fontSize = 11.sp, color = AddMemoryTextGray)
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Bottom Action Buttons Row (Cancel & Save Memory)
-=======
-                    Text(text = "🎤", fontSize = 16.sp, color = AddMemoryTealPrimary)
+                    Text(text = "🎙️", fontSize = 16.sp, color = AddMemoryTealPrimary)
                     Text(text = "Record Voice Note", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTealPrimary)
                 }
             }
@@ -304,10 +220,20 @@ fun AddMemoryScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            state.errorMessage?.let { error ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = error,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
             Spacer(modifier = Modifier.height(20.dp))
 
             // Bottom Actions: Cancel & Save Memory
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -321,16 +247,6 @@ fun AddMemoryScreen(
                     border = BorderStroke(1.dp, Color(0xFFD8E2DC)),
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
                 ) {
-<<<<<<< HEAD
-                    Text(text = "Cancel", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = AddMemoryTextDark)
-                }
-
-                Button(
-                    onClick = {
-                        viewModel.saveMemory()
-                        onSaveSuccess()
-                    },
-=======
                     Text(
                         text = "Cancel",
                         fontSize = 15.sp,
@@ -341,23 +257,23 @@ fun AddMemoryScreen(
 
                 Button(
                     onClick = { viewModel.saveMemory() },
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp),
+                    enabled = !state.isLoading,
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = AddMemoryTealPrimary)
                 ) {
-<<<<<<< HEAD
-                    Text(text = "Save Memory", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
-=======
-                    Text(
-                        text = "Save Memory",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
+                    if (state.isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+                    } else {
+                        Text(
+                            text = "Save Memory",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
+                    }
                 }
             }
 

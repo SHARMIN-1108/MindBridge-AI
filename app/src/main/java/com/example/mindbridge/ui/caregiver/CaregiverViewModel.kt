@@ -14,20 +14,36 @@ class CaregiverViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CaregiverUiState())
     val uiState: StateFlow<CaregiverUiState> = _uiState.asStateFlow()
 
-    fun viewMemories() {
-        // View memories action
-    }
-
-    fun manageReminders() {
-        // Manage reminders action
-    }
-
-    fun contactFamilyMember() {
+    fun openSupport() {
         _uiState.update { it.copy(navigateToSupport = true) }
     }
 
+    fun openMemories() {
+        _uiState.update { it.copy(navigateToMemories = true) }
+    }
+
+    fun openReminders() {
+        _uiState.update { it.copy(navigateToReminders = true) }
+    }
+
+    fun openGames() {
+        _uiState.update { it.copy(navigateToGames = true) }
+    }
+
+    fun openSchedule() {
+        _uiState.update { it.copy(navigateToSchedule = true) }
+    }
+
     fun resetNavigation() {
-        _uiState.update { it.copy(navigateToSupport = false) }
+        _uiState.update {
+            it.copy(
+                navigateToSupport = false,
+                navigateToMemories = false,
+                navigateToReminders = false,
+                navigateToGames = false,
+                navigateToSchedule = false
+            )
+        }
     }
 
     fun resetState() {

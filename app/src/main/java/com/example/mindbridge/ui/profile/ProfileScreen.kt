@@ -2,6 +2,7 @@ package com.example.mindbridge.ui.profile
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -33,22 +34,16 @@ val ProfileMintBg = Color(0xFFCBE5DC)
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
     onBackClick: () -> Unit = {},
-<<<<<<< HEAD
     onSettingsClick: () -> Unit = {},
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-<<<<<<< HEAD
     if (state.navigateToSettings) {
         onSettingsClick()
         viewModel.resetNavigation()
     }
 
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = ProfileBackground,
@@ -81,21 +76,12 @@ fun ProfileScreen(
                 )
             }
 
-<<<<<<< HEAD
             Spacer(modifier = Modifier.height(16.dp))
 
             // Profile Avatar Placeholder
             Box(
                 modifier = Modifier
                     .size(72.dp)
-=======
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Profile photo placeholder
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                     .background(ProfileCardBlueBg, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
@@ -106,7 +92,6 @@ fun ProfileScreen(
 
             Text(
                 text = "Profile photo placeholder",
-<<<<<<< HEAD
                 fontSize = 11.sp,
                 color = ProfileTextGray
             )
@@ -116,38 +101,18 @@ fun ProfileScreen(
             Text(
                 text = state.fullName,
                 fontSize = 22.sp,
-=======
-                fontSize = 12.sp,
-                color = ProfileTextGray
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = state.profileName,
-                fontSize = 20.sp,
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 fontWeight = FontWeight.Bold,
                 color = ProfileTextDark
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-<<<<<<< HEAD
             // Preferred Name Card Container
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-=======
-            // Preferred name card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             ) {
                 Column(
                     modifier = Modifier
@@ -157,7 +122,6 @@ fun ProfileScreen(
                     Text(
                         text = "Preferred name · Used in greetings",
                         fontSize = 12.sp,
-<<<<<<< HEAD
                         fontWeight = FontWeight.Medium,
                         color = ProfileTextGray
                     )
@@ -174,16 +138,6 @@ fun ProfileScreen(
                             unfocusedContainerColor = Color.White
                         ),
                         singleLine = true
-=======
-                        color = ProfileTextGray
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = state.preferredName,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = ProfileTextDark
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                     )
                 }
             }
@@ -191,14 +145,10 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // Section Header: My app preferences
-<<<<<<< HEAD
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-=======
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 Text(
                     text = "My app preferences",
                     fontSize = 16.sp,
@@ -209,13 +159,12 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-<<<<<<< HEAD
             // Preference Card 1: Text & language
             PreferenceCard(
                 title = "Text & language",
                 subtitle = state.textPreference,
                 icon = "T",
-                onEditClick = {}
+                onEditClick = { onSettingsClick() }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -225,7 +174,7 @@ fun ProfileScreen(
                 title = "Sound and voice",
                 subtitle = state.soundPreference,
                 icon = "🔊",
-                onEditClick = {}
+                onEditClick = { onSettingsClick() }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -234,118 +183,6 @@ fun ProfileScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-=======
-            // Preference Item 1: Text & language
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp)
-                                .background(ProfileCardBlueBg, RoundedCornerShape(10.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "T", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = ProfileTealPrimary)
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text(
-                                text = "Text & language",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = ProfileTextDark
-                            )
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = state.textAndLanguage,
-                                fontSize = 12.sp,
-                                color = ProfileTextGray
-                            )
-                        }
-                    }
-                    Text(
-                        text = "Edit",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = ProfileTealPrimary
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Preference Item 2: Sound and voice
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp)
-                                .background(ProfileCardBlueBg, RoundedCornerShape(10.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "🔊", fontSize = 16.sp)
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column {
-                            Text(
-                                text = "Sound and voice",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = ProfileTextDark
-                            )
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = state.soundAndVoice,
-                                fontSize = 12.sp,
-                                color = ProfileTextGray
-                            )
-                        }
-                    }
-                    Text(
-                        text = "Edit",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = ProfileTealPrimary
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Family connection card (mint bg)
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                 colors = CardDefaults.cardColors(containerColor = ProfileMintBg),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
             ) {
@@ -355,35 +192,17 @@ fun ProfileScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-<<<<<<< HEAD
-                        text = "Family connection",
-=======
                         text = state.familyConnectionTitle,
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = ProfileTextDark
                     )
-<<<<<<< HEAD
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = state.familyConnectionText,
                         fontSize = 13.sp,
                         color = ProfileTextGray,
                         lineHeight = 18.sp
-=======
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = state.familyConnectionDetail,
-                        fontSize = 13.sp,
-                        color = ProfileTextDark
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = state.familyConnectionStatus,
-                        fontSize = 12.sp,
-                        color = ProfileTextGray
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
                     )
                 }
             }
@@ -399,16 +218,12 @@ fun ProfileScreen(
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ProfileTealPrimary)
             ) {
-<<<<<<< HEAD
-                Text(text = "Edit Profile", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
-=======
                 Text(
                     text = "Edit Profile",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -422,16 +237,12 @@ fun ProfileScreen(
                 border = BorderStroke(1.dp, Color(0xFFD8E2DC)),
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
             ) {
-<<<<<<< HEAD
-                Text(text = "Manage Family Connection", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = ProfileTealPrimary)
-=======
                 Text(
                     text = "Manage Family Connection",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = ProfileTealPrimary
                 )
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -440,7 +251,6 @@ fun ProfileScreen(
 }
 
 @Composable
-<<<<<<< HEAD
 fun PreferenceCard(
     title: String,
     subtitle: String,
@@ -507,8 +317,6 @@ fun PreferenceCard(
 }
 
 @Composable
-=======
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
 fun ProfileBottomBar(selectedTab: Int) {
     Surface(
         modifier = Modifier.fillMaxWidth(),

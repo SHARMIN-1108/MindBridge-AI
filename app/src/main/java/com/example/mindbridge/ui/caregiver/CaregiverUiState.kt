@@ -8,5 +8,9 @@ data class CaregiverUiState(
     val memberRole: String = "Family member - Change",
     val footerText: String = "Example summary of app activity only. Review Margaret's sharing choices together.",
     val selectedTab: Int = 3,
-    val navigateToSupport: Boolean = false
+    val navigateToSupport: Boolean = false,
+    val navigateToMemories: Boolean = false,
+    val navigateToReminders: Boolean = false,
+    val navigateToGames: Boolean = false,
+    val navigateToSchedule: Boolean = false
 )

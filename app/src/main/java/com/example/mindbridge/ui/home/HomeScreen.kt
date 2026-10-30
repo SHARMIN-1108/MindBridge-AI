@@ -42,37 +42,21 @@ fun HomeScreen(
     onGamesClick: () -> Unit = {},
     onMemoryClick: () -> Unit = {},
     onRemindersClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-    if (state.navigateToSchedule) {
-        onScheduleClick()
-        viewModel.resetNavigation()
-    }
-    if (state.navigateToCompanion) {
-        onCompanionClick()
-        viewModel.resetNavigation()
-    }
-    if (state.navigateToGames) {
-        onGamesClick()
-        viewModel.resetNavigation()
-    }
-    if (state.navigateToMemory) {
-        onMemoryClick()
-        viewModel.resetNavigation()
-    }
-    if (state.navigateToReminders) {
-        onRemindersClick()
-        viewModel.resetNavigation()
-    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
             HomeBottomBar(
                 selectedTab = state.selectedTab,
-                onTabSelected = { viewModel.selectTab(it) }
+                onTabSelected = { viewModel.selectTab(it) },
+                onHomeClick = {},
+                onMemoryClick = onMemoryClick,
+                onActivitiesClick = onGamesClick,
+                onProfileClick = onProfileClick
             )
         },
         containerColor = HomeBackground
@@ -115,7 +99,7 @@ fun HomeScreen(
                         .size(36.dp)
                         .background(Color.White, CircleShape)
                         .shadow(1.dp, CircleShape)
-                        .clickable { viewModel.openReminders() },
+                        .clickable(onClick = onRemindersClick),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = "🔔", fontSize = 16.sp)
@@ -167,14 +151,14 @@ fun HomeScreen(
                         icon = "💬",
                         backgroundColor = CardBlueBg,
                         modifier = Modifier.weight(1f),
-                        onClick = { viewModel.openCompanion() }
+                        onClick = onCompanionClick
                     )
                     FeatureCard(
                         title = "Memory Journey",
                         icon = "🖼️",
                         backgroundColor = CardMintBg,
                         modifier = Modifier.weight(1f),
-                        onClick = { viewModel.openMemory() }
+                        onClick = onMemoryClick
                     )
                 }
                 Row(
@@ -186,14 +170,14 @@ fun HomeScreen(
                         icon = "🧩",
                         backgroundColor = CardYellowBg,
                         modifier = Modifier.weight(1f),
-                        onClick = { viewModel.openGames() }
+                        onClick = onGamesClick
                     )
                     FeatureCard(
                         title = "Daily Schedule",
                         icon = "📅",
                         backgroundColor = CardBlueBg,
                         modifier = Modifier.weight(1f),
-                        onClick = { viewModel.openSchedule() }
+                        onClick = onScheduleClick
                     )
                 }
             }
@@ -212,7 +196,9 @@ fun HomeScreen(
 
             // Reminders Container Card
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onRemindersClick),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -275,6 +261,7 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
                     .background(CardMintBg)
+                    .clickable(onClick = onGamesClick)
                     .padding(16.dp)
             ) {
                 Column {
@@ -355,7 +342,11 @@ fun FeatureCard(
 @Composable
 fun HomeBottomBar(
     selectedTab: HomeTab,
-    onTabSelected: (HomeTab) -> Unit
+    onTabSelected: (HomeTab) -> Unit,
+    onHomeClick: () -> Unit,
+    onMemoryClick: () -> Unit,
+    onActivitiesClick: () -> Unit,
+    onProfileClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -373,25 +364,37 @@ fun HomeBottomBar(
                 icon = "🏠",
                 label = "Home",
                 isSelected = selectedTab == HomeTab.HOME,
-                onClick = { onTabSelected(HomeTab.HOME) }
+                onClick = {
+                    onTabSelected(HomeTab.HOME)
+                    onHomeClick()
+                }
             )
             BottomBarItem(
                 icon = "🖼️",
                 label = "Memories",
                 isSelected = selectedTab == HomeTab.MEMORIES,
-                onClick = { onTabSelected(HomeTab.MEMORIES) }
+                onClick = {
+                    onTabSelected(HomeTab.MEMORIES)
+                    onMemoryClick()
+                }
             )
             BottomBarItem(
                 icon = "🧩",
                 label = "Activities",
                 isSelected = selectedTab == HomeTab.ACTIVITIES,
-                onClick = { onTabSelected(HomeTab.ACTIVITIES) }
+                onClick = {
+                    onTabSelected(HomeTab.ACTIVITIES)
+                    onActivitiesClick()
+                }
             )
             BottomBarItem(
                 icon = "👤",
                 label = "Profile",
                 isSelected = selectedTab == HomeTab.PROFILE,
-                onClick = { onTabSelected(HomeTab.PROFILE) }
+                onClick = {
+                    onTabSelected(HomeTab.PROFILE)
+                    onProfileClick()
+                }
             )
         }
     }

@@ -26,16 +26,15 @@ class AddMemoryViewModel : ViewModel() {
         _uiState.update { it.copy(description = description) }
     }
 
-<<<<<<< HEAD
     fun onPeopleChanged(people: String) {
-=======
+        _uiState.update { it.copy(associatedPeople = people) }
+    }
+
     fun onAssociatedPeopleChanged(people: String) {
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
         _uiState.update { it.copy(associatedPeople = people) }
     }
 
     fun addPhoto() {
-<<<<<<< HEAD
         _uiState.update { it.copy(mediaStatusText = "Photo added successfully") }
     }
 
@@ -44,18 +43,7 @@ class AddMemoryViewModel : ViewModel() {
     }
 
     fun saveMemory() {
-        // Save action
-=======
-        // Add photo action
-    }
-
-    fun recordVoiceNote() {
-        // Record voice note action
-    }
-
-    fun saveMemory() {
-        // Save memory action
->>>>>>> ab6c07414d24d138d6747023711a7174b13410a3
+        _uiState.update { it.copy(mediaStatusText = "Memory saved successfully") }
     }
 
     fun resetState() {
